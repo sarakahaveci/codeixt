@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import Map from "./Map";
 function App() {
+  var map;
+  var service;
+  var infowindow;
+
+  function initMap() {
+    var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+    infowindow = new google.maps.InfoWindow();
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: sydney,
+      zoom: 15,
+    });
+
+    var request = {
+      query: "Museum of Contemporary Art Australia",
+      fields: ["name", "geometry"],
+    };
+
+    var service = new google.maps.places.PlacesService(map);
+
+    service.findPlaceFromQuery(request, function (results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i]);
+        }
+        map.setCenter(results[0].geometry.location);
+      }
+    });
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hi</h1>
+      <a src="AIzaSyB0OzWKmFvAGEniuv-W40iZ3cVJcRE0l_I" />
+      <Map />
     </div>
   );
 }
